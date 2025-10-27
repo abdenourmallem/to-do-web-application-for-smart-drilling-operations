@@ -4,14 +4,17 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect, useRef, useState } from 'react'
 import EditTaskPage from './editTaskPage';
+import { FaTrash, FaPlus, FaEdit, FaCheck, } from 'react-icons/fa';
 interface TaskItemProps {
     id: number;
     title: string;
     description: string;
     completed: boolean;
     fetchTasks: () => void;
+    onSelect: () => void;
+    isSelected: boolean;
 }
-function TaskItem({ title, id, description, completed, fetchTasks
+function TaskItem({ title, id, description, completed, fetchTasks, onSelect, isSelected
 }: TaskItemProps) {
     const [menuVisible, setMenuVisible] = useState(false);
     const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
@@ -37,7 +40,18 @@ function TaskItem({ title, id, description, completed, fetchTasks
         setMenuPosition({ x: e.pageX, y: e.pageY });
         setMenuVisible(true);
     };
-
+    const handleSetCompleted = async () => {
+        try {
+            await axios.put(`http://127.0.0.1:8000/tasks/${id}`, {
+                description: description,
+                completed: true,
+            });
+            setMenuVisible(false);
+            fetchTasks();
+        } catch (err) {
+            console.error("Error deleting task:", err);
+        }
+    }
     // Delete task
     const handleDelete = async () => {
         try {
@@ -51,7 +65,8 @@ function TaskItem({ title, id, description, completed, fetchTasks
 
     // Edit task
     const handleEdit = async (newDesc: string) => {
-        if (!newDesc) return;
+        if (!newDesc.trim()) return;
+        console.log(newDesc);
         try {
             await axios.put(`http://127.0.0.1:8000/tasks/${id}`, {
                 description: newDesc,
@@ -66,14 +81,15 @@ function TaskItem({ title, id, description, completed, fetchTasks
 
     return (
         <>
-            <li className="list-group-item" key={id
+            <li className={`list-group-item ${completed ? ' opacity-50 ' : ''}`} key={id
 
             } onClick={() => SelectItem(id
                 , title)} onContextMenu={(e) => handleAuxClick(e)} style={{ cursor: "context-menu" }}>
-                <input className="form-check-input me-1" type="checkbox" ></input>
+                <input className="form-check-input me-1" type="checkbox" checked={isSelected}
+                    onChange={onSelect}></input>
                 <label className="form-check-label" htmlFor="firstCheckbox">{description}</label>
             </li>
-            {menuVisible && (
+            {(menuVisible) && (
                 <div
                     ref={menuRef}
                     className="custom-context-menu position-absolute bg-white border rounded shadow-sm"
@@ -84,16 +100,22 @@ function TaskItem({ title, id, description, completed, fetchTasks
                         padding: "0.5rem",
                     }}
                 >
-                    <button className="btn btn-sm btn-primary w-100 mb-1" onClick={() => setShowEditModal(true)}>
-                        ✏️ Edit
+                    {!completed && (<><button className="btn btn-sm border-t-cyan-50 w-100 mb-1" onClick={handleSetCompleted}>
+                        <FaCheck className="inline-block mr-1" />
+                        complete
                     </button>
-                    <button className="btn btn-sm btn-danger w-100" onClick={handleDelete}>
-                        🗑 Delete
+                        <button className="btn btn-sm border-t-cyan-50 w-100 mb-1" onClick={() => setShowEditModal(true)}>
+                            <FaEdit className="inline-block mr-1" />
+                            Edit
+                        </button></>)}
+                    <button className="btn btn-sm btn-danger w-100 opacity-75" onClick={handleDelete}>
+                        <FaTrash className="inline-block mr-1" />Delete
                     </button>
+
                 </div>
 
             )}
-            <EditTaskPage showModal={showEditModal} onClose={() => setShowEditModal(false)}  handleEdit={handleEdit} />
+            <EditTaskPage showModal={showEditModal} onClose={() => setShowEditModal(false)} handleEdit={handleEdit} />
         </>
     );
 }

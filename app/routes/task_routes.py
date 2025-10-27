@@ -10,6 +10,10 @@ router = APIRouter(prefix="/tasks", tags=["Tasks"])
 def read_tasks(db: Session = Depends(get_db)):
     return task_service.get_tasks(db)
 
+@router.get("/stats")
+def get_stats(db: Session = Depends(get_db)):
+    return task_service.get_stats(db)
+
 @router.post("/", response_model=TaskResponse)
 def create_task(task: TaskCreate, db: Session = Depends(get_db)):
     return task_service.create_task(db, task)
@@ -27,3 +31,13 @@ def delete_task(task_id: int, db: Session = Depends(get_db)):
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
     return {"message": "Task deleted successfully"}
+@router.post("/delete-multiple")
+def delete_multiple_tasks(data: dict, db: Session = Depends(get_db)):
+    ids = data.get("ids", [])
+    if not ids:
+        raise HTTPException(status_code=400, detail="No task IDs provided")
+
+    deleted_count = task_service.delete_multiple_tasks(db, ids)
+    return {"deleted": deleted_count}
+
+    

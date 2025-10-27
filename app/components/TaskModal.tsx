@@ -16,14 +16,14 @@ const TaskModal: React.FC<TaskModalProps> = ({ showModal, onClose, fetchTasks })
     const handleSubmit = () => {
         if (task.trim() === "") return;
         addTask(task);
-        fetchTasks();
+
         setTask("");
         onClose();
     };
     const addTask = async (task: string) => {
         try {
-            const res = await axios.post("http://127.0.0.1:8000/tasks", { description: task, completed: false });
-
+            const res = await axios.post(`http://127.0.0.1:8000/tasks`, { description: task, completed: false });
+            fetchTasks();
         } catch (err) {
             console.error("Error adding task:", err);
         }
@@ -37,7 +37,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ showModal, onClose, fetchTasks })
                 <div className="modal-content p-3">
                     <div className="modal-header">
                         <h5 className="modal-title">Add New Task</h5>
-                        <button className="btn-close" onClick={handleSubmit}></button>
+                        <button className="btn-close" onClick={onClose}></button>
                     </div>
 
                     <div className="modal-body">

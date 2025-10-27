@@ -5,7 +5,8 @@ import React, { useEffect, useState } from 'react';
 import TaskList from './TaskList';
 import TaskModal from './TaskModal';
 import axios from 'axios';
-
+import { FaHome } from 'react-icons/fa';
+import { DashBoard } from './DashBoard';
 interface Task {
     id: number;
     title: string;
@@ -14,17 +15,16 @@ interface Task {
 }
 
 
+
 const TaskForm = () => {
     const [showModal, setShowModal] = useState(false);
     const [tasks, setTasks] = useState<Task[]>([]);
 
 
-
     const fetchTasks = async () => {
         try {
-            const res = await axios.get("http://127.0.0.1:8000/tasks");
+            const res = await axios.get(`http://127.0.0.1:8000/tasks`);
             setTasks(res.data);
-
             console.log("tasks data: " + res.data);
             console.log("tasks task type: " + typeof tasks);
         } catch (err) {
@@ -37,7 +37,8 @@ const TaskForm = () => {
     }, []);
     return (
         <>
-            <h1>My Tasks</h1>
+
+            <h1><FaHome className="inline-block mr-4 size-16"></FaHome>My To-Do List</h1>
             <TaskList tasks={tasks} fetchTasks={fetchTasks} />
             <button className="btn btn-primary mb-3" onClick={() => setShowModal(true)}>
                 Add Task
@@ -54,3 +55,4 @@ const TaskForm = () => {
 }
 
 export default TaskForm
+
