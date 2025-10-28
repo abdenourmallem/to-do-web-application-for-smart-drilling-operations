@@ -34,27 +34,79 @@ const TaskModal: React.FC<TaskModalProps> = ({ showModal, onClose, fetchTasks })
             style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
         >
             <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content p-3">
-                    <div className="modal-header">
-                        <h5 className="modal-title">Add New Task</h5>
-                        <button className="btn-close" onClick={onClose}></button>
+                <div className="modal-content" style={{
+                    border: 'none',
+                    borderRadius: '24px',
+                    padding: '40px',
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
+                }}>
+                    <div className="modal-header" style={{
+                        border: 'none',
+                        padding: '0 0 32px 0'
+                    }}>
+                        <h5 className="modal-title" style={{
+                            fontSize: '28px',
+                            fontWeight: '600',
+                            color: '#1a1a1a',
+                            margin: 0
+                        }}>
+                            Add New Task
+                        </h5>
+                        <button
+                            className="btn-close"
+                            onClick={onClose}
+                            style={{
+                                fontSize: '20px',
+                                opacity: 0.5
+                            }}
+                        ></button>
                     </div>
-
-                    <div className="modal-body">
+                    <div className="modal-body" style={{ padding: '0 0 32px 0' }}>
                         <input
                             type="text"
                             className="form-control"
                             placeholder="Enter task name"
                             value={task}
                             onChange={(e) => setTask(e.target.value)}
+                            style={{
+                                borderRadius: '50px',
+                                padding: '16px 24px',
+                                border: '1px solid #e0e0e0',
+                                fontSize: '16px',
+                                backgroundColor: '#fafafa'
+                            }}
                         />
                     </div>
-
-                    <div className="modal-footer">
-                        <button className="btn btn-secondary" onClick={onClose}>
+                    <div className="modal-footer" style={{
+                        border: 'none',
+                        padding: 0,
+                        gap: '12px'
+                    }}>
+                        <button
+                            className="btn btn-secondary"
+                            onClick={onClose}
+                            style={{
+                                borderRadius: '50px',
+                                padding: '12px 32px',
+                                border: 'none',
+                                backgroundColor: '#f0f0f0',
+                                color: '#666',
+                                fontWeight: '500'
+                            }}
+                        >
                             Cancel
                         </button>
-                        <button className="btn btn-primary" onClick={handleSubmit}>
+                        <button
+                            className="btn btn-primary"
+                            onClick={handleSubmit}
+                            style={{
+                                borderRadius: '50px',
+                                padding: '12px 32px',
+                                border: 'none',
+                                backgroundColor: '#0d6efd',
+                                fontWeight: '500'
+                            }}
+                        >
                             Add Task
                         </button>
                     </div>

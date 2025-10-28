@@ -33,7 +33,6 @@ function TaskItem({ title, id, description, completed, fetchTasks, onSelect, isS
     // Show menu on right click
     const handleAuxClick = (e: React.MouseEvent<HTMLLIElement>) => {
         e.preventDefault();
-        console.log("right click detected");
         document.querySelectorAll(".custom-context-menu").forEach((el) => {
             (el as HTMLElement).style.display = "none";
         });
@@ -83,8 +82,7 @@ function TaskItem({ title, id, description, completed, fetchTasks, onSelect, isS
         <>
             <li className={`list-group-item ${completed ? ' opacity-50 ' : ''}`} key={id
 
-            } onClick={() => SelectItem(id
-                , title)} onContextMenu={(e) => handleAuxClick(e)} style={{ cursor: "context-menu" }}>
+            } onContextMenu={(e) => handleAuxClick(e)} style={{ cursor: "context-menu" }}>
                 <input className="form-check-input me-1" type="checkbox" checked={isSelected}
                     onChange={onSelect}></input>
                 <label className="form-check-label" htmlFor="firstCheckbox">{description}</label>
@@ -118,11 +116,6 @@ function TaskItem({ title, id, description, completed, fetchTasks, onSelect, isS
             <EditTaskPage showModal={showEditModal} onClose={() => setShowEditModal(false)} handleEdit={handleEdit} />
         </>
     );
-}
-
-function SelectItem(id: number, title: string): void {
-    console.log(title +
-        + " selected");
 }
 
 export default TaskItem

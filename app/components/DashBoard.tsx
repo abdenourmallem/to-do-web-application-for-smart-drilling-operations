@@ -12,22 +12,22 @@ interface Stats {
 
 
 export function DashBoard() {
-const [stats, setStats] = useState<Stats>({
-    totalTasks: 0,
-    modifiedTasks: 0,
-    completedTasks: 0,
-    deletedTasks: 0
-});
- const countTasks = async () => {
+    const [stats, setStats] = useState<Stats>({
+        totalTasks: 0,
+        modifiedTasks: 0,
+        completedTasks: 0,
+        deletedTasks: 0
+    });
+    const countTasks = async () => {
 
-    try {
-        const res = await axios.get(`http://127.0.0.1:8000/tasks/stats`);
-        setStats(res.data);
-        console.log(stats);
-    } catch (err) {
-        console.error("Error fetching tasks:", err);
+        try {
+            const res = await axios.get(`http://127.0.0.1:8000/tasks/stats`);
+            setStats(res.data);
+            console.log(stats);
+        } catch (err) {
+            console.error("Error fetching tasks:", err);
+        }
     }
-}
     React.useEffect(() => {
         countTasks();
     }, []);
@@ -39,7 +39,7 @@ const [stats, setStats] = useState<Stats>({
                 <h2 className="text-xl font-bold mb-18 text-center">Statistics</h2>
                 <h1></h1>
                 <div className="flex flex-col gap-4">
-                    <div className="bg-gray-800 p-2 ">
+                    <div className=" p-2 ">
                         <h5 className="text-lg font-semibold">Total Tasks</h5>
                         <p className="text-2xl">{stats.totalTasks}</p>
                     </div>
